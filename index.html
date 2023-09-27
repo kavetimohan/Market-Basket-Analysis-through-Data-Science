@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Market Basket Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #inputBox {
+            margin: 20px auto;
+            padding: 10px;
+        }
+        #result {
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Market Basket Analysis</h1>
+    
+    <div id="inputBox">
+        <label for="transactionData">Upload transaction data (CSV file):</label><br>
+        <input type="file" id="transactionData"><br>
+        <button onclick="performMarketBasketAnalysis()">Analyze Transactions</button>
+    </div>
+
+    <div id="result">
+        <h2>Market Basket Analysis Result:</h2>
+        <pre id="analysisResult"></pre>
+    </div>
+
+    <script>
+        function performMarketBasketAnalysis() {
+            const transactionDataInput = document.getElementById("transactionData");
+            const transactionDataFile = transactionDataInput.files[0];
+
+            if (transactionDataFile) {
+                const formData = new FormData();
+                formData.append("file", transactionDataFile);
+
+                // Send the uploaded file to the server for analysis
+                fetch("/perform-market-basket-analysis", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("analysisResult").textContent = data;
+                });
+            } else {
+                alert("Please select a file.");
+            }
+        }
+    </script>
+</body>
+</html>
